@@ -7,9 +7,10 @@
 # Distributed under terms of the BSD-3-Clause license.
 
 from flask_restful import Api
-from .user import UserResource, UserListResource
+from .user import UserResource, UserListResource, UserLogin
 
 api = Api()
 api.add_resource(UserListResource, '/users')
 api.add_resource(UserResource, '/users/<user_id>')
+api.add_resource(UserLogin, '/login')
 

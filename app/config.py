@@ -23,6 +23,7 @@ class BaseConfig:
 	SQLALCHEMY_RECORD_QUERIES = False
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	SQLALCHEMY_DATABASE_URI = DB_URI or f'{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+	JWT_SECRET_KEY = None
 
 	@staticmethod
 	def init_app(app):
@@ -30,6 +31,7 @@ class BaseConfig:
 
 
 class DevConfig(BaseConfig):
+	JWT_SECRET_KEY = 'change-this-default-key'
 	DEBUG = True
 
 
@@ -38,6 +40,7 @@ class TestConfig(BaseConfig):
 
 
 class ProdConfig(BaseConfig):
+	JWT_SECRET_KEY = environ.get('FLASK_JWT_SECRET', None)
 	DEBUG = False
 
 
