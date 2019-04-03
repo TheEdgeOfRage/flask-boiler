@@ -8,15 +8,17 @@
 
 from flask import request
 from flask_restful import Resource
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 
-from app.models import User, db
-from app.schemas import UserSchema
+from app.models import db
+from app.models.user import User
+from app.schemas.user import UserSchema
 
 
 class UserResource(Resource):
 	schema = UserSchema()
 
+	@jwt_required
 	def get(self, user_id):
 		user = User.query.filter_by(id=user_id).first()
 		if user is None:
@@ -28,6 +30,7 @@ class UserResource(Resource):
 class UserListResource(Resource):
 	schema = UserSchema()
 
+	@jwt_required
 	def get(self):
 		users = User.query.all()
 		result = []

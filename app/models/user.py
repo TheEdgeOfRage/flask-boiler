@@ -6,10 +6,8 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from passlib.hash import argon2
-
-db = SQLAlchemy()
 
 
 class User(db.Model):
