@@ -15,7 +15,7 @@ if DB_URI is None:
 	DB_PASSWORD = environ.get('DB_PASSWORD', '')
 	DB_HOST = environ.get('DB_HOST', 'localhost')
 	DB_PORT = environ.get('DB_PORT', '5432')
-	DB_NAME = environ.get('DB_NAME', 'bachelor')
+	DB_NAME = environ.get('DB_NAME', None)
 
 
 class BaseConfig:
@@ -24,6 +24,8 @@ class BaseConfig:
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	SQLALCHEMY_DATABASE_URI = DB_URI or f'{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 	JWT_SECRET_KEY = None
+	DEBUG = False
+	TESTING = False
 
 	@staticmethod
 	def init_app(app):
@@ -31,17 +33,17 @@ class BaseConfig:
 
 
 class DevConfig(BaseConfig):
-	JWT_SECRET_KEY = 'change-this-default-key'
+	JWT_SECRET_KEY = 'default-secret'
 	DEBUG = True
 
 
 class TestConfig(BaseConfig):
 	TESTING = True
+	DEBUG = True
 
 
 class ProdConfig(BaseConfig):
 	JWT_SECRET_KEY = environ.get('FLASK_JWT_SECRET', None)
-	DEBUG = False
 
 
 configs = {
