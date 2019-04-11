@@ -8,7 +8,13 @@
 
 from flask import request
 from flask_restful import Resource
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import (
+	create_access_token,
+	create_refresh_token,
+	jwt_required,
+	jwt_refresh_token_required,
+	get_jwt_identity,
+)
 
 from app.models import db
 from app.models.user import User
@@ -49,7 +55,7 @@ class UserListResource(Resource):
 		return self.schema.dump(user)
 
 
-class UserLogin(Resource):
+class LoginResource(Resource):
 	def post(self):
 		if not request.is_json:
 			return {'msg': 'Missing JSON in request'}, 400
@@ -65,6 +71,21 @@ class UserLogin(Resource):
 		if user is None or not user.verify_password(password):
 			return {'msg': 'Wrong username or password'}, 401
 
-		access_token = create_access_token(identity=email)
-		return {'token': access_token}, 200
+		ret = {
+			'access_token': create_access_token(identity=email),
+			'refresh_token': create_refresh_token(identity=email)
+		}
+
+		return ret, 200
+
+
+class RefreshResource(Resource):
+	@jwt_refresh_token_required
+	def post(self):
+		current_email = get_jwt_identity()
+		ret = {
+			'access_token': create_access_token(identity=current_email)
+		}
+
+		return ret, 200
 
