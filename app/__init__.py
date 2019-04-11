@@ -16,7 +16,7 @@ from .config import configs
 from .models import db
 
 
-def create_app(package_name):
+def create_app(package_name='__main__'):
 	app = Flask(package_name)
 	config = environ.get('FLASK_ENV', 'default')
 	config = configs.get(config)

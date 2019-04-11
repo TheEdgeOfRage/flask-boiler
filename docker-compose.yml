@@ -1,0 +1,27 @@
+version: "3"
+services:
+  db:
+    image: postgres:alpine
+    container_name: boiler-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - /docker/boiler/db:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: boiler-backend
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      FLASK_APP: ${FLASK_APP}
+      FLASK_ENV: ${FLASK_ENV}
+      DB_URI: 'postgresql://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}'
+    ports:
+      - ${WEB_PORT}:80
+    depends_on:
+      - db
+

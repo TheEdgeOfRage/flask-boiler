@@ -16,6 +16,7 @@ psycopg2-binary = "*"
 argon2-cffi = "*"
 passlib = "*"
 flask-jwt-extended = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
