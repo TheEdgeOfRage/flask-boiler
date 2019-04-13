@@ -38,6 +38,7 @@ class DevConfig(BaseConfig):
 
 
 class TestConfig(BaseConfig):
+	JWT_SECRET_KEY = environ.get('FLASK_JWT_SECRET', 'default-secret')
 	TESTING = True
 	DEBUG = True
 
