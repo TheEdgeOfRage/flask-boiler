@@ -6,7 +6,9 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from app import create_app
+from app import create_blueprint as app_blueprint
+from common import create_app
 
-app = create_app(package_name=__name__)
+app = create_app()
+app.register_blueprint(app_blueprint(), url_prefix='/api')
 

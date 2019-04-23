@@ -6,7 +6,7 @@
 #
 # Distributed under terms of the BSD-3-Clause license.
 
-from . import db
+from common import db
 from passlib.hash import argon2
 
 
