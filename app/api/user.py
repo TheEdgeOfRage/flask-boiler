@@ -22,7 +22,7 @@ from app.schemas.user import UserSchema
 
 
 class UserResource(Resource):
-	schema = UserSchema()
+	user_schema = UserSchema()
 
 	@jwt_required
 	def get(self, user_id):
@@ -30,20 +30,15 @@ class UserResource(Resource):
 		if user is None:
 			return {'error': 'No user found'}, 404
 
-		return self.schema.dump(user)
+		return self.user_schema.dump(user)
 
 
 class UserListResource(Resource):
-	schema = UserSchema()
+	user_schema = UserSchema()
 
 	@jwt_required
 	def get(self):
-		users = User.query.all()
-		result = []
-		for user in users:
-			result.append(self.schema.dump(user))
-
-		return result
+		return [self.user_schema.dump(user) for user in User.query.all()]
 
 	def post(self):
 		email = request.json['email']
@@ -52,7 +47,7 @@ class UserListResource(Resource):
 		db.session.add(user)
 		db.session.commit()
 
-		return self.schema.dump(user)
+		return self.user_schema.dump(user)
 
 
 class LoginResource(Resource):
